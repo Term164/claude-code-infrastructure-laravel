@@ -1,23 +1,27 @@
-# Claude Code Infrastructure Showcase
+# Laravel + Vue Infrastructure Showcase
 
-**A curated reference library of production-tested Claude Code infrastructure.**
+**A hybrid reference library of Claude Code infrastructure for modern Laravel applications with Vue.js frontends.**
 
-Born from 6 months of real-world use managing a complex TypeScript microservices project, this showcase provides the patterns and systems that solved the "skills don't activate automatically" problem and scaled Claude Code for enterprise development.
+Converted from the original TypeScript/Node.js infrastructure, this showcase provides patterns and best practices for full-stack Laravel development - combining Laravel's powerful backend with Vue.js for dynamic frontend interactions, while preserving Blade for marketing and content pages.
 
-> **This is NOT a working application** - it's a reference library. Copy what you need into your own projects.
+> **This is NOT a working application** - it's a reference library for Laravel developers. Copy what you need into your Laravel + Vue projects.
 
 ---
 
 ## What's Inside
 
-**Production-tested infrastructure for:**
-- ✅ **Auto-activating skills** via hooks
-- ✅ **Modular skill pattern** (500-line rule with progressive disclosure)
-- ✅ **Specialized agents** for complex tasks
-- ✅ **Dev docs system** that survives context resets
-- ✅ **Comprehensive examples** using generic blog domain
+**Hybrid Laravel + Vue infrastructure for:**
+- ✅ **Laravel Development Guidelines** - MVC patterns, Eloquent best practices
+- ✅ **Laravel Frontend Guidelines** - Blade + Vue integration, Vite setup, hybrid patterns
+- ✅ **Vue.js Integration** - Component patterns, API communication, SPA architecture
+- ✅ **Laravel Route Debugger** - Debug Laravel routing and middleware issues
+- ✅ **Laravel Error Fixer** - Handle PHP/Laravel specific errors
+- ✅ **Full-Stack Tools** - Artisan-style commands for hybrid development
+- ✅ **Auto-activating skills** via hooks (adapted for Laravel + Vue)
+- ✅ **Reference Materials** - React/TypeScript patterns for full-stack comparison
 
-**Time investment to build:** 6 months of iteration
+**Original investment:** 6 months of TypeScript development
+**Hybrid conversion:** Laravel + Vue adaptation with full-stack patterns
 **Time to integrate into your project:** 15-30 minutes
 
 ---
@@ -43,9 +47,11 @@ Born from 6 months of real-world use managing a complex TypeScript microservices
 
 Browse the [skills catalog](.claude/skills/) and copy what you need.
 
-**Available:**
-- **backend-dev-guidelines** - Node.js/Express/TypeScript patterns
-- **frontend-dev-guidelines** - React/TypeScript/MUI v7 patterns
+**Available for Laravel + Vue:**
+- **laravel-dev-guidelines** - Laravel MVC, Eloquent, and service patterns
+- **laravel-frontend-guidelines** - Blade + Vue integration, hybrid frontend patterns
+- **frontend-dev-guidelines** - React patterns (for full-stack comparison/alternative)
+- **backend-dev-guidelines** - Node.js patterns (for reference/alternative)
 - **skill-developer** - Meta-skill for creating skills
 - **route-tester** - Test authenticated API routes
 - **error-tracking** - Sentry integration patterns
@@ -54,11 +60,13 @@ Browse the [skills catalog](.claude/skills/) and copy what you need.
 
 ### 🤖 I want specialized agents
 
-10 production-tested agents for complex tasks:
+12 production-tested agents for complex tasks:
+- **Laravel Route Debugger** - Debug Laravel routing and middleware
+- **Laravel Error Fixer** - Handle PHP/Laravel specific errors
 - Code architecture review
 - Refactoring assistance
 - Documentation generation
-- Error debugging
+- Frontend error debugging
 - And more...
 
 **👉 [Agents Guide: .claude/agents/README.md](.claude/agents/README.md)**
@@ -141,13 +149,15 @@ dev/
 
 ## Component Catalog
 
-### 🎨 Skills (5)
+### 🎨 Skills (7)
 
 | Skill | Lines | Purpose | Best For |
 |-------|-------|---------|----------|
+| [**laravel-dev-guidelines**](.claude/skills/laravel-dev-guidelines/) | ~300 | Laravel MVC/Eloquent patterns | Laravel apps |
+| [**laravel-frontend-guidelines**](.claude/skills/laravel-frontend-guidelines/) | ~300 | Blade/Vite/Livewire patterns | Laravel frontends |
 | [**skill-developer**](.claude/skills/skill-developer/) | 426 | Creating and managing skills | Meta-development |
-| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry patterns | Backend APIs |
-| [**frontend-dev-guidelines**](.claude/skills/frontend-dev-guidelines/) | 398 | React/MUI v7/TypeScript | React frontends |
+| [**backend-dev-guidelines**](.claude/skills/backend-dev-guidelines/) | 304 | Express/Prisma/Sentry patterns | Node.js reference |
+| [**frontend-dev-guidelines**](.claude/skills/frontend-dev-guidelines/) | 398 | React/MUI v7/TypeScript | React reference |
 | [**route-tester**](.claude/skills/route-tester/) | 389 | Testing authenticated routes | API testing |
 | [**error-tracking**](.claude/skills/error-tracking/) | ~250 | Sentry integration | Error monitoring |
 
@@ -176,6 +186,8 @@ dev/
 
 | Agent | Purpose |
 |-------|---------|
+| **laravel-route-debugger** | Debug Laravel routing and middleware |
+| **laravel-error-fixer** | Handle PHP/Laravel specific errors |
 | code-architecture-reviewer | Review code for architectural consistency |
 | code-refactor-master | Plan and execute refactoring |
 | documentation-architect | Generate comprehensive documentation |
@@ -189,13 +201,53 @@ dev/
 
 **👉 [How agents work →](.claude/agents/README.md)**
 
-### 💬 Slash Commands (3)
+### 💬 Slash Commands (5)
 
 | Command | Purpose |
 |---------|---------|
+| /laravel-docs | Create Laravel-specific documentation |
+| /laravel-route-research | Research Laravel routes for testing |
 | /dev-docs | Create structured dev documentation |
 | /dev-docs-update | Update docs before context reset |
 | /route-research-for-testing | Research route patterns for testing |
+
+**🆕 Vue Integration Patterns:** The laravel-frontend-guidelines includes comprehensive Vue.js integration patterns for hybrid applications.
+
+---
+
+## 🎯 Hybrid Architecture Patterns
+
+### Laravel + Vue Full-Stack Approach
+
+```
+Marketing Pages (Blade)          Application Features (Vue)
+├── SEO-optimized content        ├── Dynamic components
+├── Static information           ├── Real-time interactions
+├── Simple forms                 ├── Complex workflows
+└── Fast page loads             └── SPA-like experience
+        ↓                           ↓
+└────────── Laravel Backend ──────────
+    ├── API endpoints
+    ├── Authentication
+    ├── Business logic
+    └── Data management
+```
+
+### When to Use Each Technology
+
+**Blade Templates:**
+- Landing pages and marketing content
+- SEO-critical pages
+- Simple forms with validation
+- Email templates
+- Admin dashboards with minimal interactivity
+
+**Vue Components:**
+- Interactive forms (contact, checkout)
+- Real-time features (notifications, chat)
+- Complex UI (data tables, charts)
+- Single-page applications
+- Dynamic content without page refreshes
 
 ---
 

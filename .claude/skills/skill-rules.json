@@ -25,6 +25,73 @@
                 ]
             }
         },
+        "laravel-dev-guidelines": {
+            "type": "domain",
+            "enforcement": "suggest",
+            "priority": "high",
+            "description": "Laravel development patterns for PHP/Laravel applications",
+            "promptTriggers": {
+                "keywords": [
+                    "laravel",
+                    "php",
+                    "controller",
+                    "service",
+                    "repository",
+                    "route",
+                    "routing",
+                    "API",
+                    "endpoint",
+                    "middleware",
+                    "validation",
+                    "eloquent",
+                    "model",
+                    "migration",
+                    "form request",
+                    "dependency injection",
+                    "artisan",
+                    "blade",
+                    "database"
+                ],
+                "intentPatterns": [
+                    "(create|add|implement|build).*?(route|endpoint|API|controller|service|repository)",
+                    "(fix|handle|debug).*?(error|exception|laravel)",
+                    "(add|implement).*?(middleware|validation|error.*?handling)",
+                    "(organize|structure|refactor).*?(laravel|app|API)",
+                    "(how to|best practice).*?(laravel|route|controller|service)",
+                    "artisan.*?(command|make)",
+                    "migration.*?(create|modify)"
+                ]
+            },
+            "fileTriggers": {
+                "pathPatterns": [
+                    "app/**/*.php",
+                    "database/migrations/**/*.php",
+                    "database/factories/**/*.php",
+                    "database/seeders/**/*.php",
+                    "routes/**/*.php",
+                    "config/**/*.php",
+                    "tests/**/*.php"
+                ],
+                "pathExclusions": [
+                    "**/*.blade.php",
+                    "vendor/**",
+                    "node_modules/**",
+                    "storage/**",
+                    "bootstrap/cache/**"
+                ],
+                "contentPatterns": [
+                    "class.*Controller",
+                    "Route::",
+                    "Schema::",
+                    "use Illuminate",
+                    "namespace App\\\\",
+                    "\\$table->",
+                    "public function store",
+                    "validate\\(",
+                    "Eloquent"
+                ]
+            }
+        },
         "backend-dev-guidelines": {
             "type": "domain",
             "enforcement": "suggest",
@@ -88,7 +155,7 @@
             "type": "guardrail",
             "enforcement": "block",
             "priority": "high",
-            "description": "React/TypeScript best practices including MUI v7 compatibility",
+            "description": "React/TypeScript best practices including MUI v7 compatibility (for full-stack apps)",
             "promptTriggers": {
                 "keywords": [
                     "component",
@@ -107,7 +174,7 @@
                     "React"
                 ],
                 "intentPatterns": [
-                    "(create|add|make|build|update|modify|edit).*?(component|UI|page|modal|dialog|form)",
+                    "(create|add|make|build|update|modify|edit).*?(react.*component|UI|page|modal|dialog|form)",
                     "(how to|best practice).*?(component|react|MUI)",
                     "(style|design|layout).*?(component|UI)"
                 ]
@@ -118,7 +185,10 @@
                     "frontend/src/**/*.ts",
                     "client/src/**/*.tsx",
                     "client/src/**/*.ts",
-                    "src/**/*.tsx"
+                    "src/**/*.tsx",
+                    "resources/js/**/*.vue",
+                    "resources/js/**/*.ts",
+                    "resources/js/**/*.tsx"
                 ],
                 "pathExclusions": [
                     "**/*.test.tsx",
@@ -136,10 +206,12 @@
                     "Grid2",
                     "Unstable_Grid",
                     "makeStyles",
-                    "@material-ui/core"
+                    "@material-ui/core",
+                    "import.*react",
+                    "export.*React"
                 ]
             },
-            "blockMessage": "⚠️ BLOCKED - Frontend Best Practices Required\n\n📋 REQUIRED ACTION:\n1. Use Skill tool: 'frontend-dev-guidelines'\n2. Review MUI v7 patterns (Grid uses size={{}} prop, NOT xs/sm props)\n3. Check React/TypeScript best practices\n4. Use proper styling patterns\n5. Then retry this edit\n\nReason: Enforce MUI v7 compatibility and React best practices\nFile: {file_path}\n\n💡 TIP: Add '// @skip-validation' comment to skip future checks",
+            "blockMessage": "⚠️ BLOCKED - Frontend Best Practices Required\n\n📋 REQUIRED ACTION:\n1. Use Skill tool: 'frontend-dev-guidelines'\n2. Review patterns for your frontend stack (React/MUI or Vue)\n3. Check TypeScript best practices\n4. Use proper styling patterns\n5. Then retry this edit\n\nReason: Enforce frontend best practices for React/Vue + TypeScript\nFile: {file_path}\n\n💡 TIP: Add '// @skip-validation' comment to skip future checks",
             "skipConditions": {
                 "sessionSkillUsed": true,
                 "fileMarkers": [
@@ -209,7 +281,8 @@
                     "**/instrument.ts",
                     "**/sentry*.ts",
                     "**/*Controller.ts",
-                    "**/*Service.ts"
+                    "**/*Service.ts",
+                    "**/config/sentry.php"
                 ],
                 "contentPatterns": [
                     "@sentry",
@@ -233,7 +306,7 @@
             "low": "Optional - Trigger only for explicit matches"
         },
         "customization": {
-            "pathPatterns": "Adjust to match your project structure (blog-api, auth-service, etc.)",
+            "pathPatterns": "Adjust to match your project structure (app/, database/, routes/, etc.)",
             "keywords": "Add domain-specific terms relevant to your project",
             "intentPatterns": "Use regex for flexible user intent matching"
         }

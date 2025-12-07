@@ -21,47 +21,54 @@ interface SessionTracking {
 }
 
 function getFileCategory(filePath: string): 'backend' | 'frontend' | 'database' | 'other' {
-    // Frontend detection
-    if (filePath.includes('/frontend/') ||
+    // Laravel Frontend detection (Blade/Vue)
+    if (filePath.includes('/resources/views/') ||
+        filePath.includes('/resources/js/') ||
+        filePath.includes('/frontend/') ||
         filePath.includes('/client/') ||
         filePath.includes('/src/components/') ||
         filePath.includes('/src/features/')) return 'frontend';
 
-    // Backend detection (common service directories)
-    if (filePath.includes('/src/controllers/') ||
+    // Laravel Backend detection
+    if (filePath.includes('/app/Http/') ||
+        filePath.includes('/app/Services/') ||
+        filePath.includes('/app/Models/') ||
+        filePath.includes('/app/Repositories/') ||
+        filePath.includes('/routes/') ||
+        filePath.includes('/src/controllers/') ||
         filePath.includes('/src/services/') ||
-        filePath.includes('/src/routes/') ||
-        filePath.includes('/src/api/') ||
         filePath.includes('/server/')) return 'backend';
 
-    // Database detection
+    // Laravel Database detection
     if (filePath.includes('/database/') ||
-        filePath.includes('/prisma/') ||
-        filePath.includes('/migrations/')) return 'database';
+        filePath.includes('/migrations/') ||
+        filePath.includes('/seeders/') ||
+        filePath.includes('/factories/')) return 'database';
 
     return 'other';
 }
 
 function shouldCheckErrorHandling(filePath: string): boolean {
     // Skip test files, config files, and type definitions
-    if (filePath.match(/\.(test|spec)\.(ts|tsx)$/)) return false;
-    if (filePath.match(/\.(config|d)\.(ts|tsx)$/)) return false;
+    if (filePath.match(/\.(test|spec)\.(ts|tsx|php)$/) && !filePath.includes('Pest.php')) return false;
+    if (filePath.match(/\.(config|d)\.(ts|tsx|php)$/)) return false;
     if (filePath.includes('types/')) return false;
     if (filePath.includes('.styles.ts')) return false;
+    if (filePath.includes('vendor/')) return false;
 
-    // Check for code files
-    return filePath.match(/\.(ts|tsx|js|jsx)$/) !== null;
+    // Check for code files (PHP, TypeScript, JavaScript)
+    return filePath.match(/\.(ts|tsx|js|jsx|php|blade\.php)$/) !== null;
 }
 
 function analyzeFileContent(filePath: string): {
     hasTryCatch: boolean;
     hasAsync: boolean;
-    hasPrisma: boolean;
+    hasDatabase: boolean;
     hasController: boolean;
     hasApiCall: boolean;
 } {
     if (!existsSync(filePath)) {
-        return { hasTryCatch: false, hasAsync: false, hasPrisma: false, hasController: false, hasApiCall: false };
+        return { hasTryCatch: false, hasAsync: false, hasDatabase: false, hasController: false, hasApiCall: false };
     }
 
     const content = readFileSync(filePath, 'utf-8');
@@ -69,9 +76,9 @@ function analyzeFileContent(filePath: string): {
     return {
         hasTryCatch: /try\s*\{/.test(content),
         hasAsync: /async\s+/.test(content),
-        hasPrisma: /prisma\.|PrismaService|findMany|findUnique|create\(|update\(|delete\(/i.test(content),
-        hasController: /export class.*Controller|router\.|app\.(get|post|put|delete|patch)/.test(content),
-        hasApiCall: /fetch\(|axios\.|apiClient\./i.test(content),
+        hasDatabase: /::find\(|::create\(|::update\(|::delete\(|DB::|Model::|Eloquent|->save\(|->delete\(/i.test(content),
+        hasController: /class.*Controller|Route::|Controller::extends|->handle\(/i.test(content),
+        hasApiCall: /fetch\(|axios\.|apiClient\.|Http::|->get\(|->post\(/i.test(content),
     };
 }
 
@@ -137,7 +144,7 @@ async function main() {
             ({ analysis }) =>
                 analysis.hasTryCatch ||
                 analysis.hasAsync ||
-                analysis.hasPrisma ||
+                analysis.hasDatabase ||
                 analysis.hasController ||
                 analysis.hasApiCall
         );
@@ -156,25 +163,25 @@ async function main() {
         if (categories.backend.length > 0) {
             const backendFiles = analysisResults.filter(f => f.category === 'backend');
             const hasTryCatch = backendFiles.some(f => f.analysis.hasTryCatch);
-            const hasPrisma = backendFiles.some(f => f.analysis.hasPrisma);
+            const hasDatabase = backendFiles.some(f => f.analysis.hasDatabase);
             const hasController = backendFiles.some(f => f.analysis.hasController);
 
             console.log('⚠️  Backend Changes Detected');
             console.log(`   ${categories.backend.length} file(s) edited\n`);
 
             if (hasTryCatch) {
-                console.log('   ❓ Did you add Sentry.captureException() in catch blocks?');
+                console.log('   ❓ Did you add Sentry\captureException() in catch blocks?');
             }
-            if (hasPrisma) {
-                console.log('   ❓ Are Prisma operations wrapped in error handling?');
+            if (hasDatabase) {
+                console.log('   ❓ Are Eloquent operations wrapped in error handling?');
             }
             if (hasController) {
                 console.log('   ❓ Do controllers use BaseController.handleError()?');
             }
 
-            console.log('\n   💡 Backend Best Practice:');
+            console.log('\n   💡 Laravel Best Practice:');
             console.log('      - All errors should be captured to Sentry');
-            console.log('      - Use appropriate error helpers for context');
+            console.log('      - Use Laravel\'s exception handling');
             console.log('      - Controllers should extend BaseController\n');
         }
 
@@ -194,9 +201,9 @@ async function main() {
                 console.log('   ❓ Are errors displayed to the user?');
             }
 
-            console.log('\n   💡 Frontend Best Practice:');
-            console.log('      - Use your notification system for user feedback');
-            console.log('      - Error boundaries for component errors');
+            console.log('\n   💡 Laravel Frontend Best Practice:');
+            console.log('      - Use Blade @error directives for validation errors');
+            console.log('      - Vue error boundaries for component errors');
             console.log('      - Display user-friendly error messages\n');
         }
 
